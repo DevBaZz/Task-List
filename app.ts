@@ -1,35 +1,4 @@
-function getSingleHTMLElement(element:string):HTMLElement | null  {
-    return document.querySelector(element);// getting element from the DOM
-};
-function createHTMLElement(ele:string):HTMLElement{
-    return document.createElement(ele);
-}
-function addToLocalStorage(value:string){
-    const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
-    tasks.push(value);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
 
-function loadLocalStorage(){
-    console.log('Loaded local storage')
-    const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
-    tasks.forEach((task:any) =>{
-            // Create HTML element
-    // 
-    const li = createHTMLElement('li');
-    const liValue = document.createTextNode(task);
-    
-    const anchor = createHTMLElement('a');
-    // Appending Elements
-    li.classList.add('collection-item');
-    anchor.classList.add('delete-item', 'secondary-content');
-    anchor.innerHTML = `<i  class="fa fa-remove"></i>`;
-    // 
-    li.appendChild(liValue);
-    li.appendChild(anchor);
-    tasklist.appendChild(li);
-    })
-}
 
 const form = getSingleHTMLElement('.form') as HTMLFormElement;
 const tasklist =  getSingleHTMLElement('.collections') as HTMLUListElement;
@@ -85,7 +54,8 @@ function removeTask(e:any){
     console.group('%cBeginning of  function',' background-color: green; padding: 0.5em, 1em')
     if(e.target.parentElement.classList.contains('delete-item')){
         console.log(`Conditions met 
-        item removed`)
+        item removed`);
+        removefromLS(e.target.parentElement.parentElement)
         e.target.parentElement.parentElement.remove();
     }
 
@@ -113,4 +83,52 @@ function filterTask(e:any){
             }
         }
     )
+}
+
+
+
+function getSingleHTMLElement(element:string):HTMLElement | null  {
+    return document.querySelector(element);// getting element from the DOM
+};
+function createHTMLElement(ele:string):HTMLElement{
+    return document.createElement(ele);
+}
+function addToLocalStorage(value:string){
+    const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
+    tasks.push(value);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadLocalStorage(){
+    console.log('Loaded local storage')
+    const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
+    tasks.forEach((task:any) =>{
+            // Create HTML element
+    // 
+    const li = createHTMLElement('li');
+    const liValue = document.createTextNode(task);
+    
+    const anchor = createHTMLElement('a');
+    // Appending Elements
+    li.classList.add('collection-item');
+    anchor.classList.add('delete-item', 'secondary-content');
+    anchor.innerHTML = `<i  class="fa fa-remove"></i>`;
+    // 
+    li.appendChild(liValue);
+    li.appendChild(anchor);
+    tasklist.appendChild(li);
+    })
+}
+
+function removefromLS(element:any,){
+    const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
+tasks.forEach((task:any, index:number)=>{
+if(element.textContent === task){
+    console.log(task, index);
+    tasks.splice(index,1)
+}
+
+
+})
+localStorage.setItem('tasks', JSON.stringify(tasks))
 }
