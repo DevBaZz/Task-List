@@ -66,6 +66,7 @@ function clearTask(e:any){
     while(tasklist.firstChild){
         tasklist.removeChild(tasklist.firstChild);
     }
+    localStorage.clear();
 
 }
 

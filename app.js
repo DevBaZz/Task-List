@@ -57,6 +57,7 @@ function clearTask(e) {
     while (tasklist.firstChild) {
         tasklist.removeChild(tasklist.firstChild);
     }
+    localStorage.clear();
 }
 // Filter Task
 function filterTask(e) {
