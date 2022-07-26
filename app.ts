@@ -120,7 +120,7 @@ function loadLocalStorage(){
     })
 }
 
-function removefromLS(element:any,){
+function removefromLS(element:any){
     const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
 tasks.forEach((task:any, index:number)=>{
 if(element.textContent === task){
