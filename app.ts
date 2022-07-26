@@ -16,25 +16,74 @@ loadAllEvent()
 
 // Events Function
 function loadAllEvent(){
-    form?.addEventListener('submit', addtask);
-}
+    form?.addEventListener('submit', addTask);
+    tasklist?.addEventListener('click', removeTask);
+    clearTaskBTN?.addEventListener('click', clearTask);
+    filter?.addEventListener('keyup', filterTask);
+};
 
-function addtask(e:any){
+// Add Function
+function addTask(e:any){
     const taskValue = (taskInput.value).trim();
     if(taskValue === ''){
-        return  alert('This is empty taskInput');
+        e.preventDefault();
+
+        return  console.log('this is empty string');
     }
     // Create HTML element
+    // 
     const li = createHTMLElement('li');
     const liValue = document.createTextNode(taskValue);
+    // 
+    const anchor = createHTMLElement('a');
 
     // Appending Elements
     li.classList.add('collection-item');
+    anchor.classList.add('delete-item', 'secondary-content');
+    anchor.innerHTML = `<i  class="fa fa-remove"></i>`;
+    
+    // 
     li.appendChild(liValue);
+    li.appendChild(anchor);
     tasklist.appendChild(li);
 
     // Clear
     taskInput.value = '';
-    
     e.preventDefault();
+    
+};
+
+// Remove Task
+function removeTask(e:any){
+    console.group('%cBeginning of  function',' background-color: green; padding: 0.5em, 1em')
+    if(e.target.parentElement.classList.contains('delete-item')){
+        console.log(`Conditions met 
+        item removed`)
+        e.target.parentElement.parentElement.remove();
+    }
+
+}
+
+//Clear Task
+function clearTask(e:any){
+    while(tasklist.firstChild){
+        tasklist.removeChild(tasklist.firstChild);
+    }
+
+}
+
+// Filter Task
+function filterTask(e:any){
+    const text = e.target.value.toLowerCase();
+    console.log(text);
+    document.querySelectorAll('.collection-item').forEach(
+        (task:any)=>{
+            const textV = task.firstChild?.textContent;
+            if(textV?.toLocaleLowerCase().indexOf(text) != -1) {
+                task.style.display = 'block';
+            } else{
+                task.style.display = 'none';
+            }
+        }
+    )
 }
