@@ -4,6 +4,32 @@ function getSingleHTMLElement(element:string):HTMLElement | null  {
 function createHTMLElement(ele:string):HTMLElement{
     return document.createElement(ele);
 }
+function addToLocalStorage(value:string){
+    const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
+    tasks.push(value);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadLocalStorage(){
+    console.log('Loaded local storage')
+    const tasks = (!localStorage.getItem('tasks'))?[]: JSON.parse(localStorage.getItem('tasks'));
+    tasks.forEach((task:any) =>{
+            // Create HTML element
+    // 
+    const li = createHTMLElement('li');
+    const liValue = document.createTextNode(task);
+    
+    const anchor = createHTMLElement('a');
+    // Appending Elements
+    li.classList.add('collection-item');
+    anchor.classList.add('delete-item', 'secondary-content');
+    anchor.innerHTML = `<i  class="fa fa-remove"></i>`;
+    // 
+    li.appendChild(liValue);
+    li.appendChild(anchor);
+    tasklist.appendChild(li);
+    })
+}
 
 const form = getSingleHTMLElement('.form') as HTMLFormElement;
 const tasklist =  getSingleHTMLElement('.collections') as HTMLUListElement;
@@ -16,6 +42,7 @@ loadAllEvent()
 
 // Events Function
 function loadAllEvent(){
+    document.addEventListener('DOMContentLoaded',loadLocalStorage)
     form?.addEventListener('submit', addTask);
     tasklist?.addEventListener('click', removeTask);
     clearTaskBTN?.addEventListener('click', clearTask);
@@ -41,11 +68,11 @@ function addTask(e:any){
     li.classList.add('collection-item');
     anchor.classList.add('delete-item', 'secondary-content');
     anchor.innerHTML = `<i  class="fa fa-remove"></i>`;
-    
     // 
     li.appendChild(liValue);
     li.appendChild(anchor);
     tasklist.appendChild(li);
+    addToLocalStorage(taskValue);
 
     // Clear
     taskInput.value = '';

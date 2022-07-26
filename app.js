@@ -6,6 +6,30 @@ function getSingleHTMLElement(element) {
 function createHTMLElement(ele) {
     return document.createElement(ele);
 }
+function addToLocalStorage(value) {
+    const tasks = (!localStorage.getItem('tasks')) ? [] : JSON.parse(localStorage.getItem('tasks'));
+    tasks.push(value);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+function loadLocalStorage() {
+    console.log('Loaded local storage');
+    const tasks = (!localStorage.getItem('tasks')) ? [] : JSON.parse(localStorage.getItem('tasks'));
+    tasks.forEach((task) => {
+        // Create HTML element
+        // 
+        const li = createHTMLElement('li');
+        const liValue = document.createTextNode(task);
+        const anchor = createHTMLElement('a');
+        // Appending Elements
+        li.classList.add('collection-item');
+        anchor.classList.add('delete-item', 'secondary-content');
+        anchor.innerHTML = `<i  class="fa fa-remove"></i>`;
+        // 
+        li.appendChild(liValue);
+        li.appendChild(anchor);
+        tasklist.appendChild(li);
+    });
+}
 const form = getSingleHTMLElement('.form');
 const tasklist = getSingleHTMLElement('.collections');
 const clearTaskBTN = getSingleHTMLElement('.cleartask');
@@ -15,6 +39,7 @@ const taskInput = getSingleHTMLElement('#task');
 loadAllEvent();
 // Events Function
 function loadAllEvent() {
+    document.addEventListener('DOMContentLoaded', loadLocalStorage);
     form === null || form === void 0 ? void 0 : form.addEventListener('submit', addTask);
     tasklist === null || tasklist === void 0 ? void 0 : tasklist.addEventListener('click', removeTask);
     clearTaskBTN === null || clearTaskBTN === void 0 ? void 0 : clearTaskBTN.addEventListener('click', clearTask);
@@ -42,6 +67,7 @@ function addTask(e) {
     li.appendChild(liValue);
     li.appendChild(anchor);
     tasklist.appendChild(li);
+    addToLocalStorage(taskValue);
     // Clear
     taskInput.value = '';
     e.preventDefault();
