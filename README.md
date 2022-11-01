@@ -1,3 +1,3 @@
 # Task List
  Local Storage and DOM Manipulation
-https://devbazz.github.io/Task-List/
+https://dev-bazz.github.io/Task-List/
